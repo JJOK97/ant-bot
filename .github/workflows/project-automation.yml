@@ -9,21 +9,51 @@ on:
   issues:
     types: [opened, assigned, closed, reopened]
   pull_request:
-    types: [opened, closed, review_requested]
+    types: [opened, closed]
 
 jobs:
   project_automation:
     runs-on: ubuntu-latest
     steps:
+      # 프로젝트에 이슈/PR 추가
       - name: Add to Project
         uses: actions/add-to-project@v0.5.0
         with:
           project-url: https://github.com/users/JJOK97/projects/1
           github-token: ${{ secrets.PROJECT_TOKEN }}
       
-      - name: Move to column
+      # 상태 자동 변경
+      - name: Update Project Status
         uses: alex-page/github-project-automation-plus@v0.8.3
         with:
           project: AntBot
-          column: Todo
           repo-token: ${{ secrets.PROJECT_TOKEN }}
+          column: |
+            if: github.event_name == 'issues' && github.event.action == 'assigned'
+            column: Todo
+            if: github.event_name == 'pull_request' && github.event.action == 'opened'
+            column: In Review
+            if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+            column: Done
+
+      # PR이 닫힐 때 연결된 이슈 닫기
+      - name: Close linked issue
+        if: github.event_name == 'pull_request' && github.event.action == 'closed'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+            const closeIssuePattern = /(?:closes|fixes|resolves)\s*#(\d+)/gi;
+            const body = pr.body || '';
+            const matches = [...body.matchAll(closeIssuePattern)];
+            
+            for (const match of matches) {
+              const issueNumber = match[1];
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                state: 'closed'
+              });
+            }
