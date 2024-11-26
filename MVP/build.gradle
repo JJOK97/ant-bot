@@ -38,6 +38,15 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// WebClient를 위한 dependencies
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	// JSON 처리를 위한 dependencies
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+	// 기술적 분석을 위한 Ta4j 라이브러리
+	implementation 'org.ta4j:ta4j-core:0.15'
 }
 
 dependencyManagement {
