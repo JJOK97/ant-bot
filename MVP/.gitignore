@@ -38,3 +38,6 @@ out/
 
 # IDE (IntelliJ)
 .idea/
+
+# resources
+application.properties
