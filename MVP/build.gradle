@@ -47,6 +47,10 @@ dependencies {
 
 	// 기술적 분석을 위한 Ta4j 라이브러리
 	implementation 'org.ta4j:ta4j-core:0.15'
+
+	implementation 'commons-codec:commons-codec:1.15'
+	implementation 'io.netty:netty-handler'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 }
 
 dependencyManagement {
