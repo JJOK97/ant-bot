@@ -41,6 +41,12 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class WebClientConfig {
 
+    @Value("${bithumb.api.connect-timeout}")
+    private Integer connectTimeout;
+
+    @Value("${bithumb.api.read-timeout}")
+    private Integer readTimeout;
+
     @Value("${bithumb.api.url}")
     private String bithumbApiUrl;
 
@@ -49,12 +55,6 @@ public class WebClientConfig {
 
     @Value("${bithumb.api.secret-key}")
     private String secretKey;
-
-    @Value("${bithumb.api.connect-timeout:5000}")
-    private Integer connectTimeout;
-
-    @Value("${bithumb.api.read-timeout:10000}")
-    private Integer readTimeout;
 
     /**
      * Bithumb API 호출을 위한 WebClient Bean 생성

@@ -1,53 +1,25 @@
 package com.antbot.mvp.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class BithumbCandleResponse {
+    private String status;
+    private List<List<String>> data;  // 배열 형태의 캔들스틱 데이터
 
-    @JsonProperty("market")
-    private String market;
-
-    @JsonProperty("timestamp")
-    private Long timestamp;
-
-    @JsonProperty("opening_price")
-    private Double openPrice;
-
-    @JsonProperty("closing_price")
-    private Double closePrice;
-
-    @JsonProperty("high_price")
-    private Double highPrice;
-
-    @JsonProperty("low_price")
-    private Double lowPrice;
-
-    @JsonProperty("units_traded")
-    private Double volume;
-
-    @JsonProperty("acc_trade_value")
-    private Double amount;
-
-    @JsonProperty("prev_closing_price")
-    private Double prevClosingPrice;
-
-    @JsonProperty("units_traded_24H")
-    private Double volume24H;
-
-    @JsonProperty("acc_trade_value_24H")
-    private Double amount24H;
-
-    @JsonProperty("fluctate_24H")
-    private Double priceChange24H;
-
-    @JsonProperty("fluctate_rate_24H")
-    private Double priceChangePercent24H;
+    // 데이터 배열의 각 인덱스가 의미하는 바를 명시
+    public static final int TIMESTAMP = 0;    // 시간
+    public static final int OPEN_PRICE = 1;   // 시가
+    public static final int CLOSE_PRICE = 2;  // 종가
+    public static final int HIGH_PRICE = 3;   // 고가
+    public static final int LOW_PRICE = 4;    // 저가
+    public static final int VOLUME = 5;       // 거래량
 }
