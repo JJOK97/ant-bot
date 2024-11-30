@@ -1,63 +1,69 @@
+// 프로젝트의 플러그인 설정
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.0'
 	id 'io.spring.dependency-management' version '1.1.6'
 }
 
+// 프로젝트 기본 정보
 group = 'com.antbot'
 version = '0.0.1-SNAPSHOT'
 
+// Java 버전 설정
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
 
+// Lombok 설정을 위한 configurations
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
 }
 
+// 의존성을 가져올 저장소 설정
 repositories {
-	mavenCentral()
-	maven { url 'https://repo.spring.io/milestone' }
+	mavenCentral()     // 메인 저장소
+	maven { url 'https://repo.spring.io/milestone' }  // 스프링 마일스톤 저장소
 }
 
-ext {
-	set('springAiVersion', "1.0.0-M4")
-}
-
+// 프로젝트 의존성 설정
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.h2database:h2'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// 스프링 부트 기본 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'  // Elasticsearch 연동
+	implementation 'org.springframework.boot:spring-boot-starter-web'                // 웹 서버
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'           // WebClient 사용
 
-	// WebClient를 위한 dependencies
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	// JSON 처리 관련 의존성
+	implementation 'com.fasterxml.jackson.core:jackson-databind'           // JSON 변환
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'  // Java 8 시간 API 지원
 
-	// JSON 처리를 위한 dependencies
-	implementation 'com.fasterxml.jackson.core:jackson-databind'
+	// Lombok 설정
+	compileOnly 'org.projectlombok:lombok'             // 컴파일 타임에만 사용
+	annotationProcessor 'org.projectlombok:lombok'     // 어노테이션 프로세서
 
-	// 기술적 분석을 위한 Ta4j 라이브러리
-	implementation 'org.ta4j:ta4j-core:0.15'
+	// 개발 도구
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'  // 개발 편의 도구
 
-	implementation 'commons-codec:commons-codec:1.15'
-	implementation 'io.netty:netty-handler'
-	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+	// 데이터베이스
+	runtimeOnly 'com.h2database:h2'                    // 인메모리 DB
+
+	// 기술적 분석을 위한 라이브러리
+	implementation 'org.ta4j:ta4j-core:0.15'          // 기술적 분석 도구
+
+	// 암호화 및 인코딩
+	implementation 'commons-codec:commons-codec:1.15'  // 해시, 인코딩 등
+
+	// Netty 관련
+	implementation 'io.netty:netty-handler'           // 네트워크 처리
+
+	// 테스트 관련
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'  // 테스트 도구
 }
 
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
-	}
-}
-
+// 테스트 설정
 tasks.named('test') {
 	useJUnitPlatform()
 }
